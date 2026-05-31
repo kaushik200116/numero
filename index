@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numerology Product Name Analyzer</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f9;margin:0;padding:20px}
+.container{max-width:900px;margin:auto;background:#fff;padding:24px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+h1{text-align:center}
+input,button{width:100%;padding:14px;margin-top:10px;font-size:16px}
+button{cursor:pointer}
+.card{background:#fafafa;border-radius:10px;padding:16px;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Product Name Numerology Analyzer</h1>
+<input id="name" placeholder="Enter product name">
+<button onclick="analyze()">Analyze</button>
+<div id="out"></div>
+</div>
+
+<script>
+const C={A:1,I:1,J:1,Q:1,Y:1,B:2,K:2,R:2,C:3,G:3,L:3,S:3,D:4,M:4,T:4,E:5,H:5,N:5,X:5,U:6,V:6,W:6,O:7,Z:7,F:8,P:8};
+const EX=[23,24,32,33,37,41,42,46,50,51,52,55];
+const GOOD=[14,17,21,25,27,31,35,40,44];
+const BAD=[16,18,26,29];
+
+function root(n){while(n>9)n=n.toString().split('').reduce((a,b)=>a+Number(b),0);return n;}
+
+function analyze(){
+ let name=document.getElementById('name').value.trim();
+ if(!name){alert('Enter a name');return;}
+ let total=0,b=[];
+ for(let ch of name.toUpperCase()){
+   if(C[ch]){total+=C[ch];b.push(ch+'='+C[ch]);}
+   else if(/\d/.test(ch)){total+=Number(ch);b.push(ch);}
+ }
+ let r=root(total), verdict='Neutral', stars='★★★☆☆';
+ if(EX.includes(total)){verdict='Highly Recommended';stars='★★★★★';}
+ else if(GOOD.includes(total)){verdict='Recommended';stars='★★★★☆';}
+ else if(BAD.includes(total)){verdict='Avoid';stars='★☆☆☆☆';}
+
+ document.getElementById('out').innerHTML=`
+ <div class="card">
+ <h2>${name}</h2>
+ <p><b>Breakdown:</b> ${b.join(' + ')}</p>
+ <p><b>Compound Number:</b> ${total}</p>
+ <p><b>Root Number:</b> ${r}</p>
+ <p><b>Rating:</b> ${stars}</p>
+ <p><b>Verdict:</b> ${verdict}</p>
+ </div>`;
+}
+</script>
+</body>
+</html>
